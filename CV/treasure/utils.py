@@ -23,7 +23,7 @@ def filter_points(points, threshold):
     for idx, point in enumerate(points):
         valid = True
         for followed_point in points[idx + 1 :]:
-            if p2p_distance(point, followed_point) > threshold:
+            if p2p_distance(point, followed_point) < threshold:
                 valid = False
                 break
         if valid:
