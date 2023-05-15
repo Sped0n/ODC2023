@@ -5,10 +5,14 @@ from .dots import *
 
 
 def find_treasure(frame):
+    """
+    not final version, debug only
+    :param frame: image frame (max height: 480px !!!)
+    :return: N/A
+    """
     _, blur = img_preprocess(frame)
-    founds = find_locating_box(blur)
+    founds = find_locating_boxes(blur)
     pos = get_locating_coords(founds, 10)
-    pos = rearrange_locating_coords(pos)
     cframe, _ = img_correction(frame, pos)
     cframe = img_rotate(cframe)
     _, cblur = img_preprocess(cframe)
