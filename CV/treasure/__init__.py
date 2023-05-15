@@ -1,1 +1,1 @@
-__all__ = ["core", "correct", "utils", "locate"]
+__all__ = ["core", "correct", "utils", "locate", "dots"]
