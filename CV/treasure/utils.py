@@ -38,3 +38,14 @@ def m2c(moments):
     - function: calculate the center coordinate from a list of moments
     """
     return [int(moments["m10"] / moments["m00"]), int(moments["m01"] / moments["m00"])]
+
+
+def area_compare(area1, area2, threshold):
+    """
+    - area1: area1
+    - area2: area2
+    - threshold: minimum value of the ratio between two areas
+    - return: area ratio (greater than one)
+    - function: calculate the area ratio
+    """
+    return max([area1, area2]) / min([area1, area2]) > threshold
