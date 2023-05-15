@@ -2,7 +2,7 @@ import cv2
 from .utils import p2p_distance, m2c, filter_points, area_compare
 
 
-def find_locating_box(
+def find_locating_boxes(
     frame,
     min_area=20,
     max_area=4000,
@@ -12,14 +12,15 @@ def find_locating_box(
     debug=False,
 ):
     """
-    - frame: grayscale and gaussian blur processed input image
-    - min_area: minimum area of the locating box
-    - max_area: maximum area of the locating box
-    - apd_epsilon: epsilon for cv2.approxPolyDP
-    - wh_rate: width height rate
-    - min_center_distance: minimum center distance
-    - debug: debug mode
-    - return: coordinates of the top left and bottom right points of the box
+    find all locating boxes
+    :param frame: grayscale and gaussian blur processed input image
+    :param min_area: minimum area of the locating box
+    :param max_area: maximum area of the locating box
+    :param apd_epsilon: epsilon for cv2.approxPolyDP
+    :param wh_rate: width height rate
+    :param min_center_distance: minimum center distance
+    :param debug: debug mode
+    :return: coordinates of the top left and bottom right points of the box
     """
     edges = cv2.Canny(frame, 50, 150, apertureSize=3)
     raw_contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -76,23 +77,29 @@ def find_locating_box(
 
 def get_locating_coords(boxes, center_distance_threshold=10):
     """
-    - boxes: list of locating boxes
-    - center_distance_threshold: minimum center distance, prevent overlapping
-    - return: Center coordinates of locating boxes
+    get locating coordinates of 4 locating boxes
+    :param boxes: list of locating boxes
+    :param center_distance_threshold: minimum center distance, prevent overlapping
+    :return: Center coordinates of locating boxes
     """
     coordinates = []
     for box in boxes:
+        # get center coordinates of all locating boxes
         coordinates.append(m2c(cv2.moments(box)))
+    # filter over similar coordinates
     coordinates = filter_points(coordinates, center_distance_threshold)
+    # only return when number of locating boxes is valid(4)
     if len(coordinates) == 4:
-        return coordinates
+        # rearrange coordinates
+        return rearrange_locating_coords(coordinates)
     return []
 
 
 def rearrange_locating_coords(raw_coords):
     """
-    - raw_coords: list of coordinates
-    - return: rearranged coordinates
+    rearrange locating boxes coordinates
+    :param raw_coords: list of coordinates
+    :return: rearranged coordinates
     """
     avg_x = sum(c[0] for c in raw_coords) / len(raw_coords)
     avg_y = sum(c[1] for c in raw_coords) / len(raw_coords)

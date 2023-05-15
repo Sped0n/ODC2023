@@ -4,10 +4,10 @@ import numpy as np
 
 def img_correction(img, locating_points):
     """
-    - img: input image
-    - locating_points: list of coordinates of the box (tl, tr, bl, br)
-    - return: corrected image(800x800), transform array
-    - function: correct the image based on the coordinates of the top left and bottom right points of the box
+    correct the image based on the coordinates of the top left and bottom right points of the box
+    :param img: input image
+    :param locating_points: list of coordinates of the box (tl, tr, bl, br)
+    :return: corrected image(800x800), transform array
     """
     dst = [(75, 75), (725, 75), (75, 725), (725, 725)]
     dst = np.array(dst, dtype=np.float32)
@@ -19,9 +19,9 @@ def img_correction(img, locating_points):
 
 def img_rotate(img):
     """
-    - img: RGB image after correction
-    - return: Correctly oriented image
-    - function: always keep the blue square in the bottom left corner
+    always keep the blue square in the bottom left corner
+    :param img: RGB image after correction
+    :return: correctly oriented image
     """
     blur = cv2.GaussianBlur(img, (5, 5), 0)
     hsv = cv2.cvtColor(blur, cv2.COLOR_BGR2HSV)
