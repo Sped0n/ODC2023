@@ -86,4 +86,6 @@ def get_locating_points(boxes, center_distance_threshold=10):
     for box in boxes:
         coordinates.append(m2c(cv2.moments(box)))
     coordinates = filter_points(coordinates, center_distance_threshold)
-    return coordinates
+    if len(coordinates) == 4:
+        return coordinates
+    return []
