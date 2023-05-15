@@ -74,7 +74,7 @@ def find_locating_box(
     return contours4
 
 
-def get_locating_points(boxes, center_distance_threshold=10):
+def get_locating_coords(boxes, center_distance_threshold=10):
     """
     - boxes: list of locating boxes
     - center_distance_threshold: minimum center distance, prevent overlapping
@@ -87,3 +87,23 @@ def get_locating_points(boxes, center_distance_threshold=10):
     if len(coordinates) == 4:
         return coordinates
     return []
+
+
+def rearrange_locating_coords(raw_coords):
+    """
+    - raw_coords: list of coordinates
+    - return: rearranged coordinates
+    """
+    avg_x = sum(c[0] for c in raw_coords) / len(raw_coords)
+    avg_y = sum(c[1] for c in raw_coords) / len(raw_coords)
+    tl, tr, bl, br = None, None, None, None
+    for c in raw_coords:
+        if c[0] < avg_x and c[1] < avg_y:
+            tl = c
+        elif c[0] > avg_x and c[1] < avg_y:
+            tr = c
+        elif c[0] < avg_x and c[1] > avg_y:
+            bl = c
+        else:
+            br = c
+    return tl, tr, bl, br
