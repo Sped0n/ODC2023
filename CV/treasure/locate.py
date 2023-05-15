@@ -1,5 +1,5 @@
 import cv2
-from .utils import p2p_distance, m2c, filter_points
+from .utils import p2p_distance, m2c, filter_points, area_compare
 
 
 def find_locating_box(
@@ -22,7 +22,8 @@ def find_locating_box(
     - return: coordinates of the top left and bottom right points of the box
     """
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    edges = cv2.Canny(gray, 50, 150, apertureSize=3)
+    blur = cv2.GaussianBlur(gray, (3, 3), 2)
+    edges = cv2.Canny(blur, 50, 150, apertureSize=3)
     raw_contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # filter based on area
@@ -65,7 +66,8 @@ def find_locating_box(
             res1 = cv2.pointPolygonTest(contour, c2, False)
             res2 = cv2.pointPolygonTest(followed_contour, c1, False)
 
-            if res1 > 0 and res2 > 0:
+            # two contours are contained within each other and not similar in size
+            if res1 > 0 and res2 > 0 and area_compare(m1["m00"], m2["m00"], 1.3):
                 if p2p_distance(c1, c2) < min_center_distance:
                     contours4.append(contour)
     # debug
@@ -84,4 +86,4 @@ def get_locating_points(boxes, center_distance_threshold=10):
     for box in boxes:
         coordinates.append(m2c(cv2.moments(box)))
     coordinates = filter_points(coordinates, center_distance_threshold)
-    return boxes
+    return coordinates
