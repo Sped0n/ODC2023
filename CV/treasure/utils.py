@@ -60,4 +60,16 @@ def img_preprocess(img):
     """
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (3, 3), 1)
-    return blur
+    return gray, blur
+
+
+def coord_scale(coord):
+    """
+    - x: x
+    - y: y
+    - return: scaled coordinate
+    - function: scale coordinates from 800x800 to a 10x10 map
+    """
+    scaled_x = round((coord[0] - 125) / 25)
+    scaled_y = 22 - round((coord[1] - 125) / 25)
+    return scaled_x, scaled_y
