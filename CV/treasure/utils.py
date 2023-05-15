@@ -1,4 +1,5 @@
 import math
+import cv2
 
 
 def p2p_distance(point1, point2):
@@ -49,3 +50,14 @@ def area_compare(area1, area2, threshold):
     - function: calculate the area ratio
     """
     return max([area1, area2]) / min([area1, area2]) > threshold
+
+
+def img_preprocess(img):
+    """
+    - img: input image
+    - return: preprocessed image
+    - function: preprocess the input image
+    """
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    blur = cv2.GaussianBlur(gray, (3, 3), 1)
+    return blur
