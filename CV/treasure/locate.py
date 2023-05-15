@@ -12,7 +12,7 @@ def find_locating_box(
     debug=False,
 ):
     """
-    - frame: grayscale processed input image
+    - frame: grayscale and gaussian blur processed input image
     - min_area: minimum area of the locating box
     - max_area: maximum area of the locating box
     - apd_epsilon: epsilon for cv2.approxPolyDP
@@ -21,9 +21,7 @@ def find_locating_box(
     - debug: debug mode
     - return: coordinates of the top left and bottom right points of the box
     """
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    blur = cv2.GaussianBlur(gray, (3, 3), 2)
-    edges = cv2.Canny(blur, 50, 150, apertureSize=3)
+    edges = cv2.Canny(frame, 50, 150, apertureSize=3)
     raw_contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # filter based on area
