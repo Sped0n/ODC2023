@@ -65,10 +65,10 @@ def img_preprocess(img):
 
 def coord_scale(coord):
     """
-    scale coordinates from 800x800 to a 21x21 map
+    scale coordinates from 800x800 to a 10x10 map
     :param coord: coordinate
     :return: scaled coordinate
     """
-    scaled_x = round((coord[0] - 125) / 25)
-    scaled_y = 22 - round((coord[1] - 125) / 25)
+    scaled_x = round((coord[0] - 125) / 50)
+    scaled_y = 11 - round((coord[1] - 125) / 50)
     return scaled_x, scaled_y
