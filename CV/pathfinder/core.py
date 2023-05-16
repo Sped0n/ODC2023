@@ -33,7 +33,6 @@ def get_shortest_path(maze, start, end, mid_points):
             if path_length < shortest_length:
                 shortest_length = path_length
                 shortest_path = path
-    print(shortest_path)
     for idx0, i0 in enumerate(shortest_path[:-1]):
         for i1 in a_star(maze, i0, shortest_path[idx0 + 1])[0][:-1]:
             final_dots_path.append(i1)
