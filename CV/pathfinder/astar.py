@@ -56,4 +56,4 @@ def a_star(maze, start, end):
                 # parent node of neighbor is the current node(in the closed list)
                 parent_node[neighbor] = current
     # no path found
-    return [], path_length
+    return [], -1
