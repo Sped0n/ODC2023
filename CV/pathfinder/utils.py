@@ -10,9 +10,3 @@ def manhattan_distance(coord1: tuple[int, int], coord2: tuple[int, int]) -> int:
     :return: heuristic based on manhattan distance
     """
     return abs(coord1[0] - coord2[0]) + abs(coord1[1] - coord2[1])
-
-
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()

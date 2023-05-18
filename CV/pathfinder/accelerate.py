@@ -1,4 +1,5 @@
 from itertools import permutations
+
 from .astar import a_star
 
 

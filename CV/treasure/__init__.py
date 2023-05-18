@@ -18,7 +18,9 @@ def find_treasure(frame: np.ndarray, debug: bool = False):
     _, blur = img_preprocess(frame)
     raw_locating_boxes = find_locating_boxes(blur)
     pos = get_locating_coords(raw_locating_boxes, 10)
+    print(pos)
     corrected_frame = ricd(img_correction(frame, pos))
+    cv2.imwrite("corrected.jpg", corrected_frame)
     _, cf_blur = img_preprocess(corrected_frame)
     treasure_dots = treasure_identification(cf_blur)
     scaled_dots_coords = []

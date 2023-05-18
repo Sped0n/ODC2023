@@ -1,6 +1,7 @@
 __all__ = ["get_shortest_path", "accelerate", "astar", "utils"]
 
 from itertools import permutations
+
 from .accelerate import precompute
 from .astar import a_star
 

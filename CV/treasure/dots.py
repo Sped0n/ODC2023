@@ -3,7 +3,12 @@ import numpy as np
 
 
 def treasure_identification(
-    frame, min_radius=8, max_radius=22, min_dist=40, param1=50, param2=16
+    frame: np.ndarray,
+    min_radius: int = 8,
+    max_radius: int = 22,
+    min_dist: int = 40,
+    param1: int = 50,
+    param2: int = 16,
 ) -> list[tuple[int, int, int]]:
     """
     find all treasures
