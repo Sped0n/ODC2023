@@ -1,10 +1,18 @@
+__all__ = ["image_resize"]
+
 import cv2
+import numpy as np
 
 
-def image_resize(image, width=None, height=None, inter=cv2.INTER_AREA):
+def image_resize(
+    image: np.ndarray,
+    width: int | None = None,
+    height: int | None = None,
+    inter=cv2.INTER_AREA,
+):
     # initialize the dimensions of the image to be resized and
     # grab the image size
-    dim = None
+    dim: tuple[int, int] | None = None
     (h, w) = image.shape[:2]
 
     # if both the width and height are None, then return the
@@ -16,18 +24,18 @@ def image_resize(image, width=None, height=None, inter=cv2.INTER_AREA):
     if width is None:
         # calculate the ratio of the height and construct the
         # dimensions
-        r = height / float(h)
+        r: float = height / float(h)
         dim = (int(w * r), height)
 
     # otherwise, the height is None
     else:
         # calculate the ratio of the width and construct the
         # dimensions
-        r = width / float(w)
+        r: float = width / float(w)
         dim = (width, int(h * r))
 
     # resize the image
-    resized = cv2.resize(image, dim, interpolation=inter)
+    resized: np.ndarray = cv2.resize(image, dim, interpolation=inter)
 
     # return the resized image
     return resized
