@@ -4,12 +4,15 @@ from .utils import m2c
 
 
 def img_correction(
-    img: np.ndarray, locating_points: list[tuple[int, int], ...]
-) -> tuple[np.ndarray, np.ndarray]:
+    img: np.ndarray,
+    locating_points: list[tuple[int, int], ...],
+    tmap_enable: bool = False,
+) -> tuple[np.ndarray, np.ndarray] | np.ndarray:
     """
     correct the image based on the coordinates of the top left and bottom right points of the box
     :param img: input image
     :param locating_points: list of coordinates of the box (tl, tr, bl, br)
+    :param tmap_enable: whether to return the transform array
     :return: corrected image(800x800), transform array
     """
     dst: np.ndarray = np.array(
@@ -18,7 +21,9 @@ def img_correction(
     src: np.ndarray = np.array(locating_points, dtype=np.float32)
     tmap: np.ndarray = cv2.getPerspectiveTransform(src, dst)
     res: np.ndarray = cv2.warpPerspective(img, tmap, (800, 800))
-    return res, tmap
+    if tmap_enable:
+        return res, tmap
+    return res
 
 
 def img_rotate(img: np.ndarray) -> np.ndarray:
