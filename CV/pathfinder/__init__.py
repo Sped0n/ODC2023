@@ -5,7 +5,12 @@ from .accelerate import precompute
 from .astar import a_star
 
 
-def get_shortest_path(maze, start, end, mid_points):
+def get_shortest_path(
+    maze: list[list[int]],
+    start: tuple[int, int],
+    end: tuple[int, int],
+    mid_points: list[tuple[int, int], ...],
+) -> tuple[list[tuple[int, int]], int]:
     """
     get the shortest path from start to end
     :param maze: the maze
@@ -16,18 +21,18 @@ def get_shortest_path(maze, start, end, mid_points):
     """
     precompute_dict = precompute(maze, start, end, mid_points)
     # generate all possible paths
-    paths = list(permutations(mid_points))
-    shortest_length = float("inf")
-    shortest_path = None
-    final_dots_path = []
+    paths: list[tuple[tuple[int, int], ...]] = list(permutations(mid_points))
+    shortest_length: int | float = float("inf")
+    shortest_path: list[tuple[int, int], ...] | None = None
+    final_dots_path: list[tuple[int, int]] = []
     for path in paths:
         # insert start and the end to the path
-        path = list(path)
+        path: list[tuple[int, int], ...] = list(path)
         path.append(end)
         path.insert(0, start)
-        path_length = 0
+        path_length: int = 0
         for idx, i in enumerate(path[:-1]):
-            length = precompute_dict[i][path[idx + 1]]
+            length: int = precompute_dict[i][path[idx + 1]]
             if length < 0:
                 break
             path_length += length
