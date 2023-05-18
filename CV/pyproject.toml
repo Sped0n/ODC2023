@@ -13,3 +13,8 @@ dependencies = [
     "numpy",
     "opencv-contrib-python",
 ]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
