@@ -1,39 +1,42 @@
 import cv2
 import numpy as np
+from .utils import m2c
 
 
-def img_correction(img, locating_points):
+def img_correction(
+    img: np.ndarray, locating_points: list[tuple[int, int], ...]
+) -> tuple[np.ndarray, np.ndarray]:
     """
     correct the image based on the coordinates of the top left and bottom right points of the box
     :param img: input image
     :param locating_points: list of coordinates of the box (tl, tr, bl, br)
     :return: corrected image(800x800), transform array
     """
-    dst = [(75, 75), (725, 75), (75, 725), (725, 725)]
-    dst = np.array(dst, dtype=np.float32)
-    src = np.array(locating_points, dtype=np.float32)
-    tmap = cv2.getPerspectiveTransform(src, dst)
-    res = cv2.warpPerspective(img, tmap, (800, 800))
+    dst: np.ndarray = np.array(
+        [(75, 75), (725, 75), (75, 725), (725, 725)], dtype=np.float32
+    )
+    src: np.ndarray = np.array(locating_points, dtype=np.float32)
+    tmap: np.ndarray = cv2.getPerspectiveTransform(src, dst)
+    res: np.ndarray = cv2.warpPerspective(img, tmap, (800, 800))
     return res, tmap
 
 
-def img_rotate(img):
+def img_rotate(img: np.ndarray) -> np.ndarray:
     """
     always keep the blue square in the bottom left corner
     :param img: RGB image after correction
     :return: correctly oriented image
     """
-    blur = cv2.GaussianBlur(img, (5, 5), 0)
-    hsv = cv2.cvtColor(blur, cv2.COLOR_BGR2HSV)
-    blue_mask = cv2.inRange(hsv, (100, 80, 46), (124, 255, 255))
-    eroded_blue_mask = cv2.erode(blue_mask, None, iterations=2)
-    cnts = cv2.findContours(
+    blur: np.ndarray = cv2.GaussianBlur(img, (5, 5), 0)
+    hsv: np.ndarray = cv2.cvtColor(blur, cv2.COLOR_BGR2HSV)
+    blue_mask: np.ndarray = cv2.inRange(hsv, (100, 80, 46), (124, 255, 255))
+    eroded_blue_mask: np.ndarray = cv2.erode(blue_mask, None, iterations=2)
+    cnts: tuple[np.ndarray] = cv2.findContours(
         eroded_blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
     )[-2]
-    cnt = max(cnts, key=cv2.contourArea)
-    m = cv2.moments(cnt)
-    cx = int(m["m10"] / m["m00"])
-    cy = int(m["m01"] / m["m00"])
+    cnt: np.ndarray = max(cnts, key=cv2.contourArea)
+    m: dict[str, float] = cv2.moments(cnt)
+    cx, cy = m2c(m)
     # bottom left
     if cx < 400 < cy:
         return img
