@@ -26,9 +26,10 @@ def img_correction(
     return res
 
 
-def img_rotate(img: np.ndarray) -> np.ndarray:
+def ricd(img: np.ndarray) -> np.ndarray:
     """
-    always keep the blue square in the bottom left corner
+    rotate the image to the correct direction to map the maze, always keep the blue
+    square in the bottom left corner
     :param img: RGB image after correction
     :return: correctly oriented image
     """
