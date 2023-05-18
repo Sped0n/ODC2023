@@ -24,8 +24,8 @@ def get_walkable(
     """
     get walkable coordinates with current position and last vector
 
-    >>> get_walkable((1, 1), (1, 0))
-    [(1, 2), (2, 1), (1, 0)]
+    >>> sorted(get_walkable((1, 1), (1, 0)))
+    [(1, 0), (1, 2), (2, 1)]
 
     :param curr_coord: current coordinate
     :param last_vector: last vector
