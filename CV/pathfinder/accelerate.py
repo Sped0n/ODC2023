@@ -1,8 +1,15 @@
 from itertools import permutations
+
 from .astar import a_star
 
 
-def precompute(maze, start, end, mid_points, eager=True):
+def precompute(
+    maze: list[list[int]],
+    start: tuple[int, int],
+    end: tuple[int, int],
+    mid_points: list[tuple[int, int]],
+    eager: bool = True,
+) -> dict[tuple[int, int], dict[tuple[int, int], int]]:
     """
     precompute all distances between any two points and load them all into a dict
     :param maze: A two-dimensional list that represents a maze map. 0 indicates a path and 1 indicates an obstacle.
@@ -14,12 +21,12 @@ def precompute(maze, start, end, mid_points, eager=True):
     :return: precomputed data
     """
     # make a copy of the middle points
-    dots = mid_points[:]
+    dots: list[tuple[int, int]] = mid_points[:]
     dots.append(end)
     dots.append(start)
-    to_precompute = list(permutations(dots, 2))
+    to_precompute: list[tuple[tuple[int, int], ...]] = list(permutations(dots, 2))
     # dict initialize
-    precomputed = {}
+    precomputed: dict[tuple[int, int], dict[tuple[int, int], int]] = {}
     for dot in dots:
         precomputed[dot] = {}
     # fill in the distance

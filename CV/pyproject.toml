@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ODC2023"
+dynamic = ["version"]
+description = "ODC2023"
+authors = ["Sped0n", "Z-MicTure"]
+requires-python = ">=3.11.0"
+dependencies = [
+    "matplotlib",
+    "numpy",
+    "opencv-contrib-python",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
