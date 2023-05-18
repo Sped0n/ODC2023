@@ -13,7 +13,7 @@ def find_locating_boxes(
     debug: bool = False,
 ) -> list[np.ndarray]:
     """
-    find all locating boxes
+    find all locating boxes, including duplicate identification
     :param frame: grayscale and gaussian blur processed input image
     :param min_area: minimum area of the locating box
     :param max_area: maximum area of the locating box
