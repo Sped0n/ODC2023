@@ -8,7 +8,7 @@ TEST_DATA_DIR = Path(__file__).resolve().parent / "data"
 
 
 def test_find_locating_boxes():
-    img = cv2.imread(f"{TEST_DATA_DIR}/test_pattern2.jpg", cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread(f"{TEST_DATA_DIR}/test_pattern.jpg", cv2.IMREAD_GRAYSCALE)
     (h, w) = img.shape[:2]
     r: float = 480 / float(h)
     dim = (int(w * r), 480)
