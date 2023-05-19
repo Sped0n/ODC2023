@@ -1,19 +1,23 @@
 from heapq import heappush, heappop
 
+import numpy as np
+
 from .utils import manhattan_distance
 
 
 def a_star(
-    maze: list[list[int]], start: tuple[int, int], end: tuple[int, int]
+    maze: np.ndarray, start: tuple[int, int], end: tuple[int, int]
 ) -> tuple[list[tuple[int, int]], int]:
     """
     use astar algorithm to find the shortest path from start to end
-    :param maze: A two-dimensional list that represents a maze map. 0 indicates a path and 1 indicates an obstacle.
+    :param maze: A two-dimensional array that represents a maze map. 0 indicates a path and 1 indicates an obstacle.
     :param start: a tuple that represents the start point
     :param end: a tuple that represents the end point
     :return: path (represents the shortest path from the start point to the end point, where each element is a
     coordinate tuple), the length of the path
     """
+    if maze.ndim != 2:
+        raise ValueError("maze must be a two-dimensional array")
     open_list: list[tuple[int, tuple[int, int]]] = [(0, start)]
     closed_list: set[tuple[int, int]] = set()
     g_cost: dict[tuple[int, int], int] = {start: 0}

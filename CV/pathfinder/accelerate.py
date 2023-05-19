@@ -1,10 +1,12 @@
 from itertools import permutations
 
+import numpy as np
+
 from .astar import a_star
 
 
 def precompute(
-    maze: list[list[int]],
+    maze: np.ndarray,
     start: tuple[int, int],
     end: tuple[int, int],
     mid_points: list[tuple[int, int]],

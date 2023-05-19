@@ -2,12 +2,14 @@ __all__ = ["get_shortest_path", "accelerate", "astar", "utils"]
 
 from itertools import permutations
 
+import numpy as np
+
 from .accelerate import precompute
 from .astar import a_star
 
 
 def get_shortest_path(
-    maze: list[list[int]],
+    maze: np.ndarray,
     start: tuple[int, int],
     end: tuple[int, int],
     mid_points: list[tuple[int, int], ...],
