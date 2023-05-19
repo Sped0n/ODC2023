@@ -21,3 +21,22 @@ def test_find_treasure():
             (10, 7),
         ]
     )
+
+
+def test_find_treasure_debug_enable():
+    img = image_resize(cv2.imread(f"{TEST_DATA_DIR}/test_pattern2.jpg"), width=480)
+    treasures, o_frame, c_frame = find_treasure(img, debug=True)
+    assert sorted(treasures) == sorted(
+        [
+            (1, 8),
+            (10, 3),
+            (2, 9),
+            (1, 4),
+            (8, 8),
+            (9, 2),
+            (3, 3),
+            (10, 7),
+        ]
+    )
+    assert o_frame.shape[-1] == 3
+    assert c_frame.shape == (800, 800, 3)
