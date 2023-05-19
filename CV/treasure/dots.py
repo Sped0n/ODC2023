@@ -20,6 +20,8 @@ def treasure_identification(
     :param param2: threshold for accumulator
     :return: coordinates of all treasures
     """
+    if frame.ndim != 2:
+        raise ValueError("frame must be a grayscale image")
     circles = cv2.HoughCircles(
         frame,
         cv2.HOUGH_GRADIENT,

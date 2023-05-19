@@ -24,6 +24,8 @@ def find_locating_boxes(
     :param debug: debug mode
     :return: coordinates of the top left and bottom right points of the box
     """
+    if frame.ndim != 2:
+        raise ValueError("frame must be a grayscale image")
     edges: np.ndarray = cv2.Canny(frame, 50, 150, apertureSize=3)
     raw_contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 

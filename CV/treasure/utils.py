@@ -86,6 +86,8 @@ def img_preprocess(img: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     :param img: input image (RGB)
     :return: preprocessed images: gray, blur after gray
     """
+    if img.shape[-1] != 3:
+        raise ValueError("img must be a RGB image")
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (3, 3), 1)
     return gray, blur

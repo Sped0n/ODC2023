@@ -10,11 +10,15 @@ def find_treasure(frame: np.ndarray, debug: bool = False):
     """
     find all treasure dots, if debug is True, will return the locating boxes image
     and the corrected image
-    :param frame: image frame (max height: 480px !!!)
+    :param frame: image frame (height: 480px !!!)
     :param debug: debug mode (will return image results)
     :return: scaled treasure dots coordinates (in 10x10), locating boxes image (debug only),
     corrected image (debug only)
     """
+    if frame.shape[0] != 480:
+        raise ValueError("frame height must be 480px")
+    if frame.shape[-1] != 3:
+        raise ValueError("frame must be a RGB image")
     _, blur = img_preprocess(frame)
     raw_locating_boxes = find_locating_boxes(blur)
     pos = get_locating_coords(raw_locating_boxes, 10)
