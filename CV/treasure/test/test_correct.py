@@ -18,7 +18,7 @@ def test_img_correction():
 
 
 def test_img_correction_tmap_enable():
-    img = cv2.imread(f"{TEST_DATA_DIR}/test_pattern2.jpg")
+    img = cv2.imread(f"{TEST_DATA_DIR}/test_pattern.jpg")
     (h, w) = img.shape[:2]
     r: float = 480 / float(h)
     dim = (int(w * r), 480)

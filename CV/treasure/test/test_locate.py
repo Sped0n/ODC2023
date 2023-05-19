@@ -20,7 +20,7 @@ def test_find_locating_boxes():
 
 
 def test_find_locating_boxes_debug_enable():
-    img = cv2.imread(f"{TEST_DATA_DIR}/test_pattern2.jpg", cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread(f"{TEST_DATA_DIR}/test_pattern.jpg", cv2.IMREAD_GRAYSCALE)
     (h, w) = img.shape[:2]
     r: float = 480 / float(h)
     dim = (int(w * r), 480)

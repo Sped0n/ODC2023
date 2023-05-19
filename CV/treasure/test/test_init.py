@@ -8,7 +8,7 @@ TEST_DATA_DIR = Path(__file__).resolve().parent / "data"
 
 
 def test_find_treasure():
-    img = image_resize(cv2.imread(f"{TEST_DATA_DIR}/test_pattern2.jpg"), width=480)
+    img = image_resize(cv2.imread(f"{TEST_DATA_DIR}/test_pattern.jpg"), width=480)
     assert sorted(find_treasure(img)) == sorted(
         [
             (1, 8),
@@ -24,7 +24,7 @@ def test_find_treasure():
 
 
 def test_find_treasure_debug_enable():
-    img = image_resize(cv2.imread(f"{TEST_DATA_DIR}/test_pattern2.jpg"), width=480)
+    img = image_resize(cv2.imread(f"{TEST_DATA_DIR}/test_pattern.jpg"), width=480)
     treasures, o_frame, c_frame = find_treasure(img, debug=True)
     assert sorted(treasures) == sorted(
         [
