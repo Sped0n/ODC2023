@@ -78,7 +78,7 @@ def find_locating_boxes(
 
 
 def get_locating_coords(
-    boxes: list[np.ndarray], center_distance_threshold=10
+    boxes: list[np.ndarray], center_distance_threshold: int = 10
 ) -> list[tuple[int, int]]:
     """
     get locating coordinates of 4 locating boxes

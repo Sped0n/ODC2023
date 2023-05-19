@@ -25,7 +25,7 @@ def find_treasure(frame: np.ndarray, debug: bool = False):
     treasure_dots = treasure_identification(cf_blur)
     scaled_dots_coords = []
     if debug:
-        frame_copy = frame.copy()
+        frame_copy: np.ndarray = frame.copy()
         for found in raw_locating_boxes:
             cv2.drawContours(frame_copy, [found], -1, (0, 255, 0), 3)
         for dot in treasure_dots:

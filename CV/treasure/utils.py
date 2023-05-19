@@ -104,9 +104,3 @@ def coord_scale(coord: tuple[int, int]) -> tuple[int, int]:
     scaled_x = round((coord[0] - 125) / 50)
     scaled_y = 11 - round((coord[1] - 125) / 50)
     return scaled_x, scaled_y
-
-
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()
