@@ -12,7 +12,7 @@ def find_locating_boxes(
     wh_rate: float = 0.5,
     min_center_distance: int = 5,
     debug: bool = False,
-) -> list[np.ndarray]:
+) -> list[np.ndarray] | tuple[list[np.ndarray], list[int]]:
     """
     find all locating boxes, including duplicate identification
     :param frame: grayscale and gaussian blur processed input image
@@ -73,7 +73,12 @@ def find_locating_boxes(
                     contours4.append(contour)
     # debug
     if debug:
-        print(len(contours1), len(contours2), len(contours3), len(contours4))
+        return contours4, [
+            len(contours1),
+            len(contours2),
+            len(contours3),
+            len(contours4),
+        ]
     return contours4
 
 
@@ -104,6 +109,10 @@ def rearrange_locating_coords(
 ) -> list[tuple[int, int], ...]:
     """
     rearrange locating boxes coordinates
+
+    >>> rearrange_locating_coords([(0, 0), (2, 2), (0, 2), (2, 0)])
+    [(0, 0), (2, 0), (0, 2), (2, 2)]
+
     :param raw_coords: list of coordinates
     :return: rearranged coordinates
     """
