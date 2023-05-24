@@ -34,8 +34,10 @@ def treasure_identification(
     )
     coordinates: list[tuple[int, int, int]] = []
     if circles is not None:
+        # convert the (x, y) coordinates and radius of the circles to integers
         circles = np.round(circles[0, :]).astype("int")
         for x, y, r in circles:
+            # take the circles that in region of interest
             if 150 < x < 650 and 150 < y < 650:
                 coordinates.append((x, y, r))
     return coordinates
