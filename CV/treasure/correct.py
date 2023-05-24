@@ -45,6 +45,7 @@ def ricd(img: np.ndarray) -> np.ndarray:
     )[-2]
     cnt: np.ndarray = max(cnts, key=cv2.contourArea)
     m: dict[str, float] = cv2.moments(cnt)
+    # center x, center y
     cx, cy = m2c(m)
     # bottom left
     if cx < 400 < cy:
