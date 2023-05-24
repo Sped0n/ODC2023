@@ -2,7 +2,7 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-from treasure.locate import find_locating_boxes, get_locating_coords
+from treasure.locate import find_locating_boxes, get_locating_coords_from_contours
 
 TEST_DATA_DIR = Path(__file__).resolve().parent / "data"
 
@@ -34,8 +34,8 @@ def test_find_locating_boxes_debug_enable():
         assert length > 0
 
 
-def test_get_locating_coords():
+def test_get_locating_coords_from_contours():
     input_data = np.load(f"{TEST_DATA_DIR}/raw_boxes.npy", allow_pickle=True)
     ref = [(176, 104), (389, 150), (141, 364), (405, 368)]
-    res = get_locating_coords(input_data, 10)
+    res = get_locating_coords_from_contours(input_data, 10)
     assert sorted(res) == sorted(ref)

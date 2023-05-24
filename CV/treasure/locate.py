@@ -58,17 +58,18 @@ def find_locating_boxes(
         # skip if area is zero
         if m1["m00"] == 0:
             continue
+        # center of outer contour
         c1: tuple[int, int] = m2c(m1)
         for followed_contour in contours3[idx + 1 :]:
             m2: dict[str, float] = cv2.moments(followed_contour)
             # skip if area is zero
             if m2["m00"] == 0:
                 continue
+            # center of inner contour
             c2: tuple[int, int] = m2c(m2)
-
+            # confirm the inclusion relationship
             res1: int = cv2.pointPolygonTest(contour, c2, False)
             res2: int = cv2.pointPolygonTest(followed_contour, c1, False)
-
             # two contours are contained within each other and not similar in size
             if res1 > 0 and res2 > 0 and area_compare(m1["m00"], m2["m00"], 1.3):
                 if p2p_distance(c1, c2) < min_center_distance:
@@ -84,7 +85,7 @@ def find_locating_boxes(
     return contours4
 
 
-def get_locating_coords(
+def get_locating_coords_from_contours(
     boxes: list[np.ndarray], center_distance_threshold: int = 10
 ) -> list[tuple[int, int]]:
     """
