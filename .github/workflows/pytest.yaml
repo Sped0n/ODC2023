@@ -10,6 +10,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./CV
 
     steps:
       - uses: actions/checkout@v3
@@ -20,8 +23,6 @@ jobs:
           architecture: 'x64'
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
-      - name: enter CV directory
-        run: cd CV
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
