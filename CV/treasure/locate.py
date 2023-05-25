@@ -78,6 +78,7 @@ def find_locating_boxes(
                 continue
             if contour not in contours4:
                 contours4.append(contour)
+                break
     # debug
     if debug:
         return contours4, [
