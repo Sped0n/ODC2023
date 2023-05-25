@@ -12,7 +12,7 @@ def find_locating_boxes(
     wh_rate: float = 0.5,
     min_center_distance: int = 5,
     debug: bool = False,
-) -> list[np.ndarray]:
+) -> list[np.ndarray] | tuple[list[np.ndarray], list[int]]:
     """
     find all locating boxes, including duplicate identification
     :param frame: grayscale and gaussian blur processed input image
@@ -24,6 +24,8 @@ def find_locating_boxes(
     :param debug: debug mode
     :return: coordinates of the top left and bottom right points of the box
     """
+    if frame.ndim != 2:
+        raise ValueError("frame must be a grayscale image")
     edges: np.ndarray = cv2.Canny(frame, 50, 150, apertureSize=3)
     raw_contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -56,29 +58,38 @@ def find_locating_boxes(
         # skip if area is zero
         if m1["m00"] == 0:
             continue
+        # center of outer contour
         c1: tuple[int, int] = m2c(m1)
         for followed_contour in contours3[idx + 1 :]:
             m2: dict[str, float] = cv2.moments(followed_contour)
             # skip if area is zero
             if m2["m00"] == 0:
                 continue
+            # center of inner contour
             c2: tuple[int, int] = m2c(m2)
-
+            # confirm the inclusion relationship
             res1: int = cv2.pointPolygonTest(contour, c2, False)
             res2: int = cv2.pointPolygonTest(followed_contour, c1, False)
-
             # two contours are contained within each other and not similar in size
-            if res1 > 0 and res2 > 0 and area_compare(m1["m00"], m2["m00"], 1.3):
-                if p2p_distance(c1, c2) < min_center_distance:
-                    contours4.append(contour)
+            if not res1 > 0 and res2 > 0 and area_compare(m1["m00"], m2["m00"], 1.3):
+                continue
+            # skip if two contours are too close
+            if not p2p_distance(c1, c2) < min_center_distance:
+                continue
+            contours4.append(contour)
     # debug
     if debug:
-        print(len(contours1), len(contours2), len(contours3), len(contours4))
+        return contours4, [
+            len(contours1),
+            len(contours2),
+            len(contours3),
+            len(contours4),
+        ]
     return contours4
 
 
-def get_locating_coords(
-    boxes: list[np.ndarray], center_distance_threshold=10
+def get_locating_coords_from_contours(
+    boxes: list[np.ndarray], center_distance_threshold: int = 10
 ) -> list[tuple[int, int]]:
     """
     get locating coordinates of 4 locating boxes
@@ -104,6 +115,10 @@ def rearrange_locating_coords(
 ) -> list[tuple[int, int], ...]:
     """
     rearrange locating boxes coordinates
+
+    >>> rearrange_locating_coords([(0, 0), (2, 2), (0, 2), (2, 0)])
+    [(0, 0), (2, 0), (0, 2), (2, 2)]
+
     :param raw_coords: list of coordinates
     :return: rearranged coordinates
     """

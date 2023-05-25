@@ -86,6 +86,8 @@ def img_preprocess(img: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     :param img: input image (RGB)
     :return: preprocessed images: gray, blur after gray
     """
+    if img.shape[-1] != 3:
+        raise ValueError("img must be a RGB image")
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (3, 3), 1)
     return gray, blur
@@ -104,9 +106,3 @@ def coord_scale(coord: tuple[int, int]) -> tuple[int, int]:
     scaled_x = round((coord[0] - 125) / 50)
     scaled_y = 11 - round((coord[1] - 125) / 50)
     return scaled_x, scaled_y
-
-
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()

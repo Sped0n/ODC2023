@@ -34,6 +34,8 @@ def ricd(img: np.ndarray) -> np.ndarray:
     :param img: RGB image after correction
     :return: correctly oriented image
     """
+    if img.shape[-1] != 3:
+        raise ValueError("img must be a RGB image")
     blur: np.ndarray = cv2.GaussianBlur(img, (5, 5), 0)
     hsv: np.ndarray = cv2.cvtColor(blur, cv2.COLOR_BGR2HSV)
     blue_mask: np.ndarray = cv2.inRange(hsv, (100, 80, 46), (124, 255, 255))
@@ -43,6 +45,7 @@ def ricd(img: np.ndarray) -> np.ndarray:
     )[-2]
     cnt: np.ndarray = max(cnts, key=cv2.contourArea)
     m: dict[str, float] = cv2.moments(cnt)
+    # center x, center y
     cx, cy = m2c(m)
     # bottom left
     if cx < 400 < cy:

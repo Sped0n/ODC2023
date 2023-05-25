@@ -1,10 +1,12 @@
 from itertools import permutations
 
+import numpy as np
+
 from .astar import a_star
 
 
 def precompute(
-    maze: list[list[int]],
+    maze: np.ndarray,
     start: tuple[int, int],
     end: tuple[int, int],
     mid_points: list[tuple[int, int]],
@@ -17,7 +19,7 @@ def precompute(
     :param end: a tuple that represents the end point
     :param mid_points: a list of points between start and end
     :param eager: if true, the distance between the two points is considered unique (only calculate once), instead of
-    considering each point as a different starting point to calculate the distance twice
+    considering each point as a different starting point to calculate the distance independently
     :return: precomputed data
     """
     # make a copy of the middle points
