@@ -17,4 +17,29 @@ dependencies = [
 [tool.pytest.ini_options]
 addopts = [
     "--import-mode=importlib",
+    "--doctest-modules",
+    "--cache-clear",
+]
+
+[tool.coverage.run]
+include = [
+    "pathfinder/*",
+    "translate/*",
+    "treasure/*",
+    "utils/*",
+]
+source_pkgs = [
+    "pathfinder",
+    "translate",
+    "treasure",
+    "utils",
+]
+relative_files = true
+
+[tool.coverage.report]
+include = [
+    "pathfinder/*",
+    "translate/*",
+    "treasure/*",
+    "utils/*",
 ]
