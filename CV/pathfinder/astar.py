@@ -21,7 +21,9 @@ def a_star(
     open_list: list[tuple[int, tuple[int, int]]] = [(0, start)]
     closed_list: set[tuple[int, int]] = set()
     g_cost_dict: dict[tuple[int, int], int] = {start: 0}
-    parent_node_dict: dict[tuple[int, int], tuple[int, int]] = {}  # parent node of each node
+    parent_node_dict: dict[
+        tuple[int, int], tuple[int, int]
+    ] = {}  # parent node of each node
 
     while open_list:
         # get the node with the lowest f cost
