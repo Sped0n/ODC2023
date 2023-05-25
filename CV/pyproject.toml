@@ -29,12 +29,6 @@ include = [
     "treasure/*",
     "utils/*",
 ]
-source_pkgs = [
-    "pathfinder",
-    "translate",
-    "treasure",
-    "utils",
-]
 relative_files = true
 
 [tool.coverage.report]
