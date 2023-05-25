@@ -8,6 +8,10 @@ from .utils import *
 def coord_to_index(coords: list[tuple[int, int]]) -> list[tuple[int, int]]:
     """
     convert coordinates to 2d array index
+
+    >>> coord_to_index([(1, 1), (10, 10)])
+    [(19, 1), (1, 19)]
+
     :param coords: 10x10 coordinates
     :return: 2d array index (21x21)
     """
