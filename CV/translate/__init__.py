@@ -64,26 +64,38 @@ def seq_to_motion(maze: list[list[int]], seq: list[tuple[int, int]]):
         for prediction in predictions:
             if maze[prediction[0]][prediction[1]] == 0:
                 walkable_predictions.append(prediction)
-        # straight scenario
         follow_last_motion_vector = curr_vector == last_vector
-        if len(walkable_predictions) == 1 and follow_last_motion_vector:
-            pass
-        # turn scenario
-        elif len(walkable_predictions) == 1 and not follow_last_motion_vector:
-            if curr_vector[0] * last_vector[1] - curr_vector[1] * last_vector[0] == -1:
-                motion.append(f"s_left{coord}{walkable_predictions}")
-            elif curr_vector[0] * last_vector[1] - curr_vector[1] * last_vector[0] == 1:
-                motion.append(f"s_right{coord}{walkable_predictions}")
-        # crossroad scenario
-        elif len(walkable_predictions) > 1 and follow_last_motion_vector:
-            motion.append(f"c_straight{coord}{walkable_predictions}")
-        elif len(walkable_predictions) > 1 and not follow_last_motion_vector:
-            if curr_vector[0] * last_vector[1] - curr_vector[1] * last_vector[0] == -1:
-                motion.append(f"c_left{coord}{walkable_predictions}")
-            elif curr_vector[0] * last_vector[1] - curr_vector[1] * last_vector[0] == 1:
-                motion.append(f"c_right{coord}{walkable_predictions}")
-        # U-turn scenario
-        elif len(walkable_predictions) == 0:
-            pass
+        match len(walkable_predictions):
+            case 0:
+                # dead end U-turn scenario
+                pass
+            case 1:
+                # go straight without intersection
+                if follow_last_motion_vector:
+                    pass
+                # one-way turn scenario
+                else:
+                    if (
+                        last_vector[0] * curr_vector[1]
+                        - last_vector[1] * curr_vector[0]
+                        > 0
+                    ):
+                        motion.append(f"s_left{coord}{walkable_predictions}")
+                    else:
+                        motion.append(f"s_right{coord}{walkable_predictions}")
+            case _:
+                # crossroad scenario
+                if follow_last_motion_vector:
+                    motion.append(f"c_straight{coord}{walkable_predictions}")
+                else:
+                    if (
+                        last_vector[0] * curr_vector[1]
+                        - last_vector[1] * curr_vector[0]
+                        > 0
+                    ):
+                        motion.append(f"c_left{coord}{walkable_predictions}")
+                    else:
+                        motion.append(f"c_right{coord}{walkable_predictions}")
+        # update last_vector
         last_vector = curr_vector
     return motion

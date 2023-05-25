@@ -2,7 +2,7 @@ from translate import seq_to_motion
 
 
 def test_seq_to_motion():
-    map = [
+    maze = [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 1, 1, 0, 1, 1, 1, 1, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -22,22 +22,20 @@ def test_seq_to_motion():
         (2, 8),
         (1, 8),
     ]
-    for coord in path:
-        print(map[coord[0]][coord[1]])
-    motion = seq_to_motion(map, path)
+    motion = seq_to_motion(maze, path)
     print(motion)
     assert len(motion) > 0
 
 
 def test_seq_to_motion_single_turn():
-    map = [
+    maze = [
         [1, 1, 1, 1, 1],
         [1, 0, 0, 0, 1],
         [1, 1, 1, 0, 1],
         [1, 0, 0, 0, 1],
         [1, 1, 1, 1, 1],
     ]
-    path = [(1, 1), (1, 2), (1, 3), (2, 3), (3, 3)]
-    motion = seq_to_motion(map, path)
+    path = [(1, 1), (1, 2), (1, 3), (2, 3), (3, 3), (3, 2), (3, 1)]
+    motion = seq_to_motion(maze, path)
     print(motion)
     assert len(motion) > 0
