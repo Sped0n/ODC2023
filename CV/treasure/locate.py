@@ -76,9 +76,8 @@ def find_locating_boxes(
             # skip if two contours are too close
             if not p2p_distance(c1, c2) < min_center_distance:
                 continue
-            if contour not in contours4:
-                contours4.append(contour)
-                break
+            contours4.append(contour)
+            break
     # debug
     if debug:
         return contours4, [
