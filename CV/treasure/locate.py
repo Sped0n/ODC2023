@@ -71,9 +71,12 @@ def find_locating_boxes(
             res1: int = cv2.pointPolygonTest(contour, c2, False)
             res2: int = cv2.pointPolygonTest(followed_contour, c1, False)
             # two contours are contained within each other and not similar in size
-            if res1 > 0 and res2 > 0 and area_compare(m1["m00"], m2["m00"], 1.3):
-                if p2p_distance(c1, c2) < min_center_distance:
-                    contours4.append(contour)
+            if not res1 > 0 and res2 > 0 and area_compare(m1["m00"], m2["m00"], 1.3):
+                continue
+            # skip if two contours are too close
+            if not p2p_distance(c1, c2) < min_center_distance:
+                continue
+            contours4.append(contour)
     # debug
     if debug:
         return contours4, [
