@@ -20,8 +20,8 @@ def a_star(
         raise ValueError("maze must be a two-dimensional array")
     open_list: list[tuple[int, tuple[int, int]]] = [(0, start)]
     closed_list: set[tuple[int, int]] = set()
-    g_cost: dict[tuple[int, int], int] = {start: 0}
-    parent_node: dict[tuple[int, int], tuple[int, int]] = {}  # parent node of each node
+    g_cost_dict: dict[tuple[int, int], int] = {start: 0}
+    parent_node_dict: dict[tuple[int, int], tuple[int, int]] = {}  # parent node of each node
 
     while open_list:
         # get the node with the lowest f cost
@@ -29,8 +29,8 @@ def a_star(
         if current == end:
             path: list[tuple[int, int]] = [current]
             # reverse trace of the path from end node to start node
-            while current in parent_node:
-                current = parent_node[current]
+            while current in parent_node_dict:
+                current = parent_node_dict[current]
                 path.append(current)
             path_length: int = int((len(path) - 1) / 2)
             return path[::-1], path_length
@@ -50,16 +50,16 @@ def a_star(
             # make sure walkable terrain
             if maze[neighbor[0]][neighbor[1]] != 0:
                 continue
-            tentative_g_cost: int = g_cost[current] + 1
+            tentative_g_cost: int = g_cost_dict[current] + 1
             # get the best possible "neighbor" to go
             # Update g_cost and parent node if neighbor do not have g cost, or if the new g cost is better
-            if neighbor not in g_cost or tentative_g_cost < g_cost[neighbor]:
-                g_cost[neighbor] = tentative_g_cost
+            if neighbor not in g_cost_dict or tentative_g_cost < g_cost_dict[neighbor]:
+                g_cost_dict[neighbor] = tentative_g_cost
                 # f cost = g cost + h cost
                 f_cost: int = tentative_g_cost + manhattan_distance(neighbor, end)
                 # add valid neighbor to open_list
                 heappush(open_list, (f_cost, neighbor))
                 # parent node of neighbor is the current node(in the closed list)
-                parent_node[neighbor] = current
+                parent_node_dict[neighbor] = current
     # no path found
     return [], -1
