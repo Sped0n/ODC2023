@@ -19,6 +19,7 @@ addopts = [
     "--import-mode=importlib",
     "--doctest-modules",
     "--cache-clear",
+    "--cov",
 ]
 
 [tool.coverage.run]
