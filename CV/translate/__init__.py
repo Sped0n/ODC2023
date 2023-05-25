@@ -25,7 +25,7 @@ def coord_to_index(coords: list[tuple[int, int]]) -> list[tuple[int, int]]:
 
 
 def seq_to_motions(
-    maze: list[list[int]], seq: list[tuple[int, int]], debug: bool = False
+    maze: np.ndarray, seq: list[tuple[int, int]], debug: bool = False
 ) -> list[str]:
     """
     convert the coordinate sequence to motion sequence
