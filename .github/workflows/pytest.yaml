@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: pytest-results-3.11
-          path: junit/test-results.xml
+          path: CV/junit/test-results.xml
         if: ${{ always() }}
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
