@@ -39,6 +39,7 @@ def test_find_locating_boxes_debug_enable():
     last_cnt_quantity = float("inf")
     for quantity in cnt_quantity_list:
         assert 0 < quantity <= last_cnt_quantity
+        last_cnt_quantity = quantity
 
 
 def test_get_locating_coords_from_contours():
