@@ -9,9 +9,9 @@ description = "ODC2023"
 authors = ["Sped0n", "Z-MicTure"]
 requires-python = ">=3.11.0"
 dependencies = [
-    "matplotlib",
-    "numpy",
-    "opencv-contrib-python",
+    "matplotlib >= 3.7.1",
+    "numpy >= 1.24.3",
+    "opencv-python >= 4.7.0.72",
 ]
 
 [tool.pytest.ini_options]

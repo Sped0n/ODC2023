@@ -26,25 +26,23 @@ def a_star(
     ] = {}  # parent node of each node
 
     while open_list:
-        # get the node with the lowest f cost
-        current: tuple[int, int] = heappop(open_list)[1]
-        if current == end:
-            path: list[tuple[int, int]] = [current]
+        min_f_cost_node: tuple[int, int] = heappop(open_list)[1]
+        if min_f_cost_node == end:
+            path: list[tuple[int, int]] = [min_f_cost_node]
             # reverse trace of the path from end node to start node
-            while current in parent_node_dict:
-                current = parent_node_dict[current]
-                path.append(current)
+            while min_f_cost_node in parent_node_dict:
+                min_f_cost_node = parent_node_dict[min_f_cost_node]
+                path.append(min_f_cost_node)
             path_length: int = int((len(path) - 1) / 2)
             return path[::-1], path_length
 
-        # add lowest f cost node to closed_list
-        closed_list.add(current)
+        closed_list.add(min_f_cost_node)
 
         for neighbor in [
-            (current[0] - 1, current[1]),
-            (current[0] + 1, current[1]),
-            (current[0], current[1] - 1),
-            (current[0], current[1] + 1),
+            (min_f_cost_node[0] - 1, min_f_cost_node[1]),
+            (min_f_cost_node[0] + 1, min_f_cost_node[1]),
+            (min_f_cost_node[0], min_f_cost_node[1] - 1),
+            (min_f_cost_node[0], min_f_cost_node[1] + 1),
         ]:
             # make sure within range
             if not (0 <= neighbor[0] < len(maze) and 0 <= neighbor[1] < len(maze[0])):
@@ -52,7 +50,7 @@ def a_star(
             # make sure walkable terrain
             if maze[neighbor[0]][neighbor[1]] != 0:
                 continue
-            tentative_g_cost: int = g_cost_dict[current] + 1
+            tentative_g_cost: int = g_cost_dict[min_f_cost_node] + 1
             # get the best possible "neighbor" to go
             # Update g_cost and parent node if neighbor do not have g cost, or if the new g cost is better
             if neighbor not in g_cost_dict or tentative_g_cost < g_cost_dict[neighbor]:
@@ -61,7 +59,7 @@ def a_star(
                 f_cost: int = tentative_g_cost + manhattan_distance(neighbor, end)
                 # add valid neighbor to open_list
                 heappush(open_list, (f_cost, neighbor))
-                # parent node of neighbor is the current node(in the closed list)
-                parent_node_dict[neighbor] = current
+                # parent node of neighbor is the minimum f cost node(in the closed list)
+                parent_node_dict[neighbor] = min_f_cost_node
     # no path found
     return [], -1
