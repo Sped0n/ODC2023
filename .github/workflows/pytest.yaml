@@ -3,12 +3,16 @@ name: python test
 on:
   push:
     branches: [ main ]
+    paths:
+      - '/CV/*'
   pull_request:
     branches: [ main ]
+    paths:
+      - '/CV/*'
   workflow_dispatch:
 
 jobs:
-  build:
+  python-test:
     runs-on: ubuntu-latest
     defaults:
       run:

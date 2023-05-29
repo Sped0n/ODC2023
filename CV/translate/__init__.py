@@ -29,9 +29,9 @@ def seq_to_motions(
 ) -> list[str]:
     """
     convert the coordinate sequence to motion sequence
-    :param maze:
-    :param seq:
-    :param debug:
+    :param maze: maze
+    :param seq: moving coordinate sequence
+    :param debug: whether to print debug info (the coordinates when turning and the direction)
     :return:
     """
     motions: list[str] = []

@@ -18,7 +18,7 @@ def treasure_identification(
     :param min_dist: minimum distance between two circles
     :param param1: threshold for canny edge detection
     :param param2: threshold for accumulator
-    :return: coordinates of all treasures
+    :return: when dots number is valid, return coordinates of all treasures
     """
     if frame.ndim != 2:
         raise ValueError("frame must be a grayscale image")
@@ -40,4 +40,6 @@ def treasure_identification(
             # take the circles that in region of interest
             if 150 < x < 650 and 150 < y < 650:
                 coordinates.append((x, y, r))
+    if len(coordinates) != 8:
+        return []
     return coordinates
