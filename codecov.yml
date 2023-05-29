@@ -2,6 +2,7 @@ branch: main
 
 ignore:
   - "CV/main.py"
+  - "test_*.py"
 
 comment:                  # this is a top-level key
   layout: "reach, diff, flags, files"
