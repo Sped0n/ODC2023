@@ -58,6 +58,8 @@ def m2c(moments: dict[str, float]) -> tuple[int, int]:
     :param moments: list of moments
     :return: center coordinate
     """
+    if not moments["m00"] > 0:
+        return -1, -1
     return int(moments["m10"] / moments["m00"]), int(moments["m01"] / moments["m00"])
 
 
