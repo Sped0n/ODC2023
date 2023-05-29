@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'CV/*'
+      - 'CV/**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'CV/*'
+      - 'CV/**'
   workflow_dispatch:
 
 jobs:
