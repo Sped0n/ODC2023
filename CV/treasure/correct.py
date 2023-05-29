@@ -27,7 +27,7 @@ def img_correction(
     return res
 
 
-def ricd(img: np.ndarray) -> np.ndarray:
+def ricd(img: np.ndarray) -> np.ndarray | None:
     """
     rotate the image to the correct direction to map the maze, always keep the blue
     square in the bottom left corner
@@ -43,10 +43,14 @@ def ricd(img: np.ndarray) -> np.ndarray:
     cnts: tuple[np.ndarray] = cv2.findContours(
         eroded_blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
     )[-2]
+    if not cnts:
+        return None
     cnt: np.ndarray = max(cnts, key=cv2.contourArea)
     m: dict[str, float] = cv2.moments(cnt)
     # center x, center y
     cx, cy = m2c(m)
+    if cx == -1 and cy == -1:
+        return None
     # bottom left
     if cx < 400 < cy:
         return img
