@@ -96,7 +96,7 @@ def get_locating_coords_from_contours(
     get locating coordinates of 4 locating boxes
     :param boxes: list of locating boxes
     :param center_distance_threshold: minimum center distance, prevent overlapping
-    :return: Center coordinates of locating boxes
+    :return: when locating boxes number is valid, return center coordinates of locating boxes
     """
     coordinates: list[tuple[int, int]] = []
     for box in boxes:
@@ -125,18 +125,24 @@ def rearrange_locating_coords(
     """
     avg_x: int | float = sum(c[0] for c in raw_coords) / len(raw_coords)
     avg_y: int | float = sum(c[1] for c in raw_coords) / len(raw_coords)
-    tl: tuple[int, int] | None
-    tr: tuple[int, int] | None
-    bl: tuple[int, int] | None
-    br: tuple[int, int] | None
-    tl, tr, bl, br = None, None, None, None
+    tl: tuple[int, int] | None = None
+    tr: tuple[int, int] | None = None
+    bl: tuple[int, int] | None = None
+    br: tuple[int, int] | None = None
+    tl_flag, tr_flag, bl_flag, br_flag = False, False, False, False
     for c in raw_coords:
-        if c[0] < avg_x and c[1] < avg_y:
+        if c[0] <= avg_x and c[1] <= avg_y:
             tl = c
-        elif c[0] > avg_x and c[1] < avg_y:
+            tl_flag = True
+        elif c[0] > avg_x and c[1] <= avg_y:
             tr = c
-        elif c[0] < avg_x and c[1] > avg_y:
+            tr_flag = True
+        elif c[0] <= avg_x and c[1] > avg_y:
             bl = c
+            bl_flag = True
         else:
             br = c
+            br_flag = True
+    if not (tl_flag and tr_flag and bl_flag and br_flag):
+        return []
     return list((tl, tr, bl, br))
