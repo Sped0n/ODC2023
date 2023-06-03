@@ -1,8 +1,9 @@
 from pathlib import Path
 
 import cv2
-from treasure import find_treasure
+
 from translate import coord_to_index
+from treasure import find_treasure
 from utils import image_resize
 
 TEST_DATA_DIR = Path(__file__).resolve().parent / "data"
