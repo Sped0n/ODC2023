@@ -113,7 +113,7 @@ def get_locating_coords_from_contours(
 
 def rearrange_locating_coords(
     raw_coords: list[tuple[int, int]]
-) -> list[tuple[int, int], ...]:
+) -> list[tuple[int, int]]:
     """
     rearrange locating boxes coordinates
 
@@ -125,10 +125,10 @@ def rearrange_locating_coords(
     """
     avg_x: int | float = sum(c[0] for c in raw_coords) / len(raw_coords)
     avg_y: int | float = sum(c[1] for c in raw_coords) / len(raw_coords)
-    tl: tuple[int, int] | None = None
-    tr: tuple[int, int] | None = None
-    bl: tuple[int, int] | None = None
-    br: tuple[int, int] | None = None
+    tl: tuple[int, int] = (-1, -1)
+    tr: tuple[int, int] = (-1, -1)
+    bl: tuple[int, int] = (-1, -1)
+    br: tuple[int, int] = (-1, -1)
     tl_flag, tr_flag, bl_flag, br_flag = False, False, False, False
     for c in raw_coords:
         if c[0] <= avg_x and c[1] <= avg_y:
