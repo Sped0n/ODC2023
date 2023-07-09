@@ -6,7 +6,7 @@ from .utils import m2c
 
 def img_correction(
     img: np.ndarray,
-    locating_points: list[tuple[int, int], ...],
+    locating_points: list[tuple[int, int]],
     tmap_enable: bool = False,
 ) -> tuple[np.ndarray, np.ndarray] | np.ndarray:
     """
