@@ -6,7 +6,9 @@ build-backend = "hatchling.build"
 name = "ODC2023"
 dynamic = ["version"]
 description = "ODC2023"
-authors = ["Sped0n<github.com/Sped0n>"]
+authors = [
+  { name = "Sped0n<github.com/Sped0n>", email = "realsped0n@outlook.com" },
+]
 requires-python = ">=3.11.0"
 dependencies = [
   "matplotlib >= 3.7.1",
