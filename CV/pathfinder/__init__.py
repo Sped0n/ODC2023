@@ -1,4 +1,4 @@
-__all__ = ["get_shortest_path", "accelerate", "astar", "utils"]
+__all__ = ["get_shortest_path", "accelerate", "astar"]
 
 from itertools import permutations
 
@@ -6,14 +6,15 @@ import numpy as np
 
 from .accelerate import precompute
 from .astar import a_star
+from ctyper import Coordinate, Distance
 
 
 def get_shortest_path(
     maze: np.ndarray,
-    start: tuple[int, int],
-    end: tuple[int, int],
-    mid_points: list[tuple[int, int], ...],
-) -> tuple[list[tuple[int, int]], int]:
+    start: Coordinate,
+    end: Coordinate,
+    mid_points: list[Coordinate],
+) -> tuple[list[Coordinate], Distance | float]:
     """
     get the shortest path from start to end
     :param maze: the maze
@@ -24,18 +25,18 @@ def get_shortest_path(
     """
     precompute_dict = precompute(maze, start, end, mid_points)
     # generate all possible paths
-    paths: list[tuple[tuple[int, int], ...]] = list(permutations(mid_points))
-    shortest_length: int | float = float("inf")
-    shortest_path: list[tuple[int, int], ...] | None = None
-    final_dots_path: list[tuple[int, int]] = []
+    paths: list[tuple[Coordinate, ...]] = list(permutations(mid_points))
+    shortest_length: Distance | float = float("inf")
+    shortest_path: list[Coordinate] = []
+    final_dots_path: list[Coordinate] = []
     for path in paths:
         # insert start and the end to the path
-        path: list[tuple[int, int], ...] = list(path)
+        path = list(path)
         path.append(end)
         path.insert(0, start)
-        path_length: int = 0
+        path_length: Distance = 0
         for idx, i in enumerate(path[:-1]):
-            length: int = precompute_dict[i][path[idx + 1]]
+            length: Distance = precompute_dict[i][path[idx + 1]]
             if length < 0:
                 break
             path_length += length
