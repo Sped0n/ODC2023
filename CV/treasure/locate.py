@@ -68,8 +68,8 @@ def find_locating_boxes(
             # center of inner contour
             c2: tuple[int, int] = m2c(m2)
             # confirm the inclusion relationship
-            res1: float = cv2.pointPolygonTest(contour, c2, False)
-            res2: float = cv2.pointPolygonTest(followed_contour, c1, False)
+            res1: int = cv2.pointPolygonTest(contour, c2, False)
+            res2: int = cv2.pointPolygonTest(followed_contour, c1, False)
             # two contours are contained within each other and not similar in size
             if not res1 > 0 and res2 > 0 and area_compare(m1["m00"], m2["m00"], 1.3):
                 continue
@@ -96,8 +96,7 @@ def get_locating_coords_from_contours(
     get locating coordinates of 4 locating boxes
     :param boxes: list of locating boxes
     :param center_distance_threshold: minimum center distance, prevent overlapping
-    :return: when locating boxes number is valid, return center coordinates of
-    locating boxes
+    :return: when locating boxes number is valid, return center coordinates of locating boxes
     """
     coordinates: list[tuple[int, int]] = []
     for box in boxes:

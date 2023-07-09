@@ -44,7 +44,7 @@ def find_treasure(
         for dot in treasure_dots:
             scaled_dots_coords.append(coord_scale(dot[:-1]))
             cv2.circle(corrected_frame, dot[:-1], dot[-1], (0, 255, 0), 5)
-        return sorted(scaled_dots_coords), frame_copy, corrected_frame
+        return scaled_dots_coords, frame_copy, corrected_frame
     for dot in treasure_dots:
         scaled_dots_coords.append(coord_scale(dot[:-1]))
     return sorted(scaled_dots_coords)
