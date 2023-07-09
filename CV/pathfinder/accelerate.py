@@ -3,32 +3,42 @@ from itertools import permutations
 import numpy as np
 
 from .astar import a_star
+from ctyper import Coordinate, Distance
+
+
+class a_star_data_pack:
+    def __init__(self):
+        self.length: int | None = None
+        self.path: list[Coordinate] | None = None
 
 
 def precompute(
     maze: np.ndarray,
-    start: tuple[int, int],
-    end: tuple[int, int],
-    mid_points: list[tuple[int, int]],
+    start: Coordinate,
+    end: Coordinate,
+    mid_points: list[Coordinate],
     eager: bool = True,
-) -> dict[tuple[int, int], dict[tuple[int, int], int]]:
+) -> dict[Coordinate, dict[Coordinate, Distance]]:
     """
     precompute all distances between any two points and load them all into a dict
-    :param maze: A two-dimensional list that represents a maze map. 0 indicates a path and 1 indicates an obstacle.
+    :param maze: A two-dimensional list that represents a maze map. 0 indicates a path
+    and 1 indicates an obstacle.
     :param start: a tuple that represents the start point
     :param end: a tuple that represents the end point
     :param mid_points: a list of points between start and end
-    :param eager: if true, the distance between the two points is considered unique (only calculate once), instead of
-    considering each point as a different starting point to calculate the distance independently
+    :param eager: if true, the distance between the two points is considered unique
+    (only calculate once), instead of
+    considering each point as a different starting point to calculate the distance
+    independently
     :return: precomputed data
     """
     # make a copy of the middle points
-    dots: list[tuple[int, int]] = mid_points[:]
+    dots: list[Coordinate] = mid_points[:]
     dots.append(end)
     dots.append(start)
-    to_precompute: list[tuple[tuple[int, int], ...]] = list(permutations(dots, 2))
+    to_precompute: list[tuple[Coordinate, ...]] = list(permutations(dots, 2))
     # dict initialize
-    precomputed: dict[tuple[int, int], dict[tuple[int, int], int]] = {}
+    precomputed: dict[Coordinate, dict[Coordinate, Distance]] = {}
     for dot in dots:
         precomputed[dot] = {}
     # fill in the distance

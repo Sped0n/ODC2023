@@ -1,4 +1,7 @@
-def manhattan_distance(coord1: tuple[int, int], coord2: tuple[int, int]) -> int:
+from ctyper import Coordinate, Distance
+
+
+def manhattan_distance(coord1: Coordinate, coord2: Coordinate) -> Distance:
     """
     calculate the manhattan distance
 
