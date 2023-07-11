@@ -3,6 +3,8 @@ import math
 import cv2
 import numpy as np
 
+from ctyper import NullArea
+
 
 def p2p_distance(point1: tuple[int, int], point2: tuple[int, int]) -> float:
     """
@@ -22,8 +24,9 @@ def filter_points(
     points: list[tuple[int, int]], threshold: int | float
 ) -> list[tuple[int, int]]:
     """
-    For each point, iterate through each point following it, and if there is a followed point whose
-    distance from the current coordinate is less than the threshold, discard the current point.
+    For each point, iterate through each point following it, and if there is a followed
+    point whose distance from the current coordinate is less than the threshold,
+    discard the current point.
 
     >>> filter_points([(0, 0), (1, 1), (2, 2), (3, 3)], 1)
     [(0, 0), (1, 1), (2, 2), (3, 3)]
@@ -58,8 +61,9 @@ def m2c(moments: dict[str, float]) -> tuple[int, int]:
     :param moments: list of moments
     :return: center coordinate
     """
-    if not moments["m00"] > 0:
-        return -1, -1
+    area_is_zero: bool = moments["m00"] <= 0
+    if area_is_zero:
+        raise NullArea
     return int(moments["m10"] / moments["m00"]), int(moments["m01"] / moments["m00"])
 
 
@@ -67,7 +71,8 @@ def area_compare(
     area1: int | float, area2: int | float, threshold: int | float
 ) -> bool:
     """
-    compare the ratio of two areas, if the ratio is greater than the threshold, return True
+    compare the ratio of two areas, if the ratio is greater than the
+    threshold, return True
 
     >>> area_compare(1, 1, 2)
     False
