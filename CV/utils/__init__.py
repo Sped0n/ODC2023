@@ -20,10 +20,15 @@ def image_resize(
     if width is None and height is None:
         return image
 
+    # if both the width and height are not None, then raise an exception
+    if width is not None and height is not None:
+        raise ValueError("Can only resize by width or height, not both")
+
     # check to see if the width is None
     if width is None:
         # calculate the ratio of the height and construct the
         # dimensions
+        assert height is not None
         r: float = height / float(h)
         dim = (int(w * r), height)
 
