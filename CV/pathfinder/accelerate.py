@@ -6,12 +6,6 @@ from .astar import a_star
 from ctyper import Coordinate, Distance
 
 
-class a_star_data_pack:
-    def __init__(self):
-        self.length: int | None = None
-        self.path: list[Coordinate] | None = None
-
-
 def precompute(
     maze: np.ndarray,
     start: Coordinate,
