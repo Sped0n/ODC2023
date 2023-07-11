@@ -19,7 +19,7 @@ def coord_to_index(coords: list[Coordinate]) -> list[Coordinate]:
     """
     indexes: list[Coordinate] = []
     for coord in coords:
-        indexes.append((coord[0] * 2 - 1, (11 - coord[1]) * 2 - 1))
+        indexes.append(((11 - coord[1]) * 2 - 1, coord[0] * 2 - 1))
     return indexes
 
 
