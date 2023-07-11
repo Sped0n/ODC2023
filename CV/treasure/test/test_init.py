@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import cv2
+from ctyper import TreasureNull
 
 from translate import coord_to_index
 from treasure import find_treasure
@@ -11,7 +12,7 @@ TEST_DATA_DIR = Path(__file__).resolve().parent / "data"
 
 def test_find_treasure():
     img = image_resize(cv2.imread(f"{TEST_DATA_DIR}/test_pattern.jpg"), height=480)
-    assert sorted(find_treasure(img)) == sorted(
+    assert sorted(find_treasure(img).dots_coords) == sorted(
         [
             (1, 8),
             (10, 3),
@@ -27,7 +28,10 @@ def test_find_treasure():
 
 def test_find_treasure_debug_enable():
     img = image_resize(cv2.imread(f"{TEST_DATA_DIR}/test_pattern.jpg"), height=480)
-    treasures, o_frame, c_frame = find_treasure(img, debug=True)
+    result = find_treasure(img)
+    treasures = result.dots_coords
+    o_frame = result.debug_locating_box
+    c_frame = result.debug_corrected_frame
     assert sorted(treasures) == sorted(
         [
             (1, 8),
@@ -48,26 +52,26 @@ def test_find_treasure_deployment():
     cap = cv2.VideoCapture(f"{TEST_DATA_DIR}/test.mp4")
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-    ret, frame = cap.read()
     accumulator = 0
-    last_coords, coords = None, None
-    while ret:
+    last_coords, coords = [], []
+    while cap.isOpened():
         ret, frame = cap.read()
-        raw_coords = find_treasure(frame)
-        if not raw_coords:
-            continue
-        coords = coord_to_index(raw_coords)
-        if not coords:
-            continue
-        if last_coords is None:
+        if ret:
+            try:
+                raw_coords = find_treasure(frame).dots_coords
+                coords = coord_to_index(raw_coords)
+            except TreasureNull:
+                continue
+            if last_coords == []:
+                last_coords = coords
+                continue
+            if coords == last_coords:
+                accumulator += 1
+            else:
+                accumulator = 0
             last_coords = coords
-            continue
-        if coords == last_coords:
-            accumulator += 1
-        else:
-            accumulator = 0
-        if accumulator > 10:
-            break
+            if accumulator > 10:
+                break
     cap.release()
     assert accumulator > 10
     assert sorted(coords) == sorted(
