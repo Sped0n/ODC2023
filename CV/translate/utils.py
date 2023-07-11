@@ -1,9 +1,10 @@
+from ctyper import Coordinate, Vector
 import numpy as np
 
 
 def direction_prediction(
-    curr_coord: tuple[int, int], last_vector: tuple[int, int]
-) -> list[tuple[int, int]]:
+    curr_coord: Coordinate, last_vector: Vector
+) -> list[Coordinate]:
     """
     get walkable coordinates with current position and last vector
 
@@ -14,7 +15,7 @@ def direction_prediction(
     :param last_vector: last vector
     :return: a list of walkable coordinates (max length = 3)
     """
-    walkable: list = []
+    walkable: list[Coordinate] = []
     for neighbor in [
         (curr_coord[0] - 1, curr_coord[1]),
         (curr_coord[0] + 1, curr_coord[1]),
@@ -28,9 +29,7 @@ def direction_prediction(
     return walkable
 
 
-def vector_to_direction(
-    last_vector: tuple[int, int], curr_vector: tuple[int, int]
-) -> str:
+def vector_to_direction(last_vector: Vector, curr_vector: Vector) -> str:
     """
     get direction from two vectors
 
@@ -56,14 +55,14 @@ def vector_to_direction(
             return "align"
         case _:
             raise ValueError(
-                "invalid direction, please check whether the input vectors is an integer vector"
+                "invalid direction, please check whether input is an integer vector"
             )
 
 
 def mod_output_string(
     content: str,
     intersection_cond: str,
-    curr_coord: tuple[int, int],
+    curr_coord: Coordinate,
     debug: bool = False,
 ) -> str:
     """

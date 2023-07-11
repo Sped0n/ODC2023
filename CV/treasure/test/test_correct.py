@@ -15,7 +15,7 @@ def test_img_correction():
     dim = (int(w * r), 480)
     img = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
     # correct image
-    c_img = img_correction(img, [(176, 104), (389, 150), (141, 364), (405, 368)])
+    c_img = img_correction(img, [(176, 104), (389, 150), (141, 364), (405, 368)]).result
     assert c_img.shape == (800, 800, 3)
 
 
@@ -27,9 +27,9 @@ def test_img_correction_tmap_enable():
     dim = (int(w * r), 480)
     img = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
     # correct image
-    _, t_map = img_correction(
-        img, [(176, 104), (389, 150), (141, 364), (405, 368)], tmap_enable=True
-    )
+    t_map = img_correction(
+        img, [(176, 104), (389, 150), (141, 364), (405, 368)]
+    ).transform_map
     assert len(t_map) == 3
     for vec in t_map:
         assert len(vec) == 3
@@ -40,7 +40,7 @@ def test_ricd():
     test_img_list = [original_img]
     # get 4 different rotated images
     for i in range(1, 4):
-        method = None
+        method: int = -1
         match i:
             case 1:
                 method = cv2.ROTATE_90_CLOCKWISE
@@ -56,7 +56,7 @@ def test_ricd():
         # use blue mask to find the blue block
         blue_mask: np.ndarray = cv2.inRange(hsv, (100, 80, 46), (124, 255, 255))
         eroded_blue_mask: np.ndarray = cv2.erode(blue_mask, None, iterations=2)
-        cnts: tuple[np.ndarray] = cv2.findContours(
+        cnts = cv2.findContours(
             eroded_blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
         )[-2]
         # find the largest contour

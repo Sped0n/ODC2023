@@ -2,7 +2,7 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-from treasure.locate import find_locating_boxes, get_locating_coords_from_contours
+from treasure.locate import find_locating_boxes, filter_locating_boxes
 
 TEST_DATA_DIR = Path(__file__).resolve().parent / "data"
 
@@ -17,8 +17,7 @@ def test_find_locating_boxes():
     # blur image
     img = cv2.GaussianBlur(img, (3, 3), 1)
     # find locating boxes
-    boxes = find_locating_boxes(img)
-    for box in boxes:
+    for box in find_locating_boxes(img).boxes:
         assert box.all()
 
 
@@ -32,7 +31,9 @@ def test_find_locating_boxes_debug_enable():
     # blur image
     img = cv2.GaussianBlur(img, (3, 3), 1)
     # find locating boxes
-    boxes, cnt_quantity_list = find_locating_boxes(img, debug=True)
+    result = find_locating_boxes(img)
+    boxes = result.boxes
+    cnt_quantity_list = result.debug
     for box in boxes:
         assert box.all()
     assert len(cnt_quantity_list) == 4
@@ -42,8 +43,8 @@ def test_find_locating_boxes_debug_enable():
         last_cnt_quantity = quantity
 
 
-def test_get_locating_coords_from_contours():
+def test_filter_locating_boxes():
     input_data = np.load(f"{TEST_DATA_DIR}/raw_boxes.npy", allow_pickle=True)
     ref = [(176, 104), (389, 150), (141, 364), (405, 368)]
-    res = get_locating_coords_from_contours(input_data, 10)
+    res = filter_locating_boxes(input_data, 10)
     assert sorted(res) == sorted(ref)
