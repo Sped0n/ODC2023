@@ -17,9 +17,12 @@ plt.rcParams["animation.ffmpeg_path"] = "/opt/homebrew/bin/ffmpeg"
 
 matplotlib.use("TkAgg")
 
-img = cv2.imread("/Users/spedon/eden/python/ODC2023/CV/mazeExp/test_pattern2.jpg")
+img = cv2.imread("./mazeExp/test_pattern2.jpg")
 img = image_resize(img, height=480)
-raw_coords, a, b = find_treasure(img, debug=True)
+result = find_treasure(img)
+raw_coords = result.dots_coords
+a = result.debug_locating_box
+b = result.debug_corrected_frame
 plt.subplot(121)
 plt.imshow(cv2.cvtColor(a, cv2.COLOR_BGR2RGB))
 plt.subplot(122)
@@ -27,7 +30,7 @@ plt.imshow(cv2.cvtColor(b, cv2.COLOR_BGR2RGB))
 
 print("raw coords\n", raw_coords)  # col, row
 coords = coord_to_index(raw_coords)
-maze = np.load("/Users/spedon/eden/python/ODC2023/CV/maze.npy", allow_pickle=True)
+maze = np.load("./maze.npy", allow_pickle=True)
 print(maze)
 t0 = time.time()
 x1 = get_shortest_path(maze, (19, 1), (1, 19), coords)
